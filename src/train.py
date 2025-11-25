@@ -6,18 +6,11 @@ import yaml
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from pathlib import Path
-import os # <-- ¡NECESARIO!
+import os
 
 # --- NUEVOS IMPORTS PARA MLFLOW ---
 import mlflow
 import mlflow.sklearn
-# -----------------------------------
-
-# Forzamos la URI de tracking a DagsHub. La URL real se pasa como variable de entorno
-# en tu archivo ci.yaml. Si falla, usa un backend temporal seguro.
-mlflow_uri = os.environ.get("MLFLOW_TRACKING_URI", "https://dagshub.com/SebaFama23/telco_churn.mlflow")
-mlflow.set_tracking_uri(mlflow_uri)
-mlflow.set_experiment("Telco Churn Experiment")
 # -----------------------------------
 
 # Función para cargar parámetros de un archivo YAML
@@ -87,7 +80,7 @@ def train_and_evaluate(train_path, test_path, model_path, metrics_path, params_p
         
         # MLflow: Loguea el modelo como un artefacto
         #mlflow.sklearn.log_model(model, "model_artifact")
-        #mlflow.log_artifact(metrics_path) 
+        mlflow.log_artifact(metrics_path) # También logueamos el metrics.json
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
