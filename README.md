@@ -10,8 +10,17 @@ Paso	    Comando/Acción	    Herramienta	        Objetivo
 8. COMMIT GIT	        git add . git commit -m "Descripción de los cambios de código y datos"	    Git     	Rastrea los cambios de código y el puntero DVC (.dvc)
 9. SUBIDA GIT	        git push	        Git	        Sube el código y los punteros a DAGsHub (la parte "visible").
 
-
 MLFOW conections:
-set MLFLOW_TRACKING_URI="https://dagshub.com/SebaFama23/mi_nuevo_proyecto_mlops.mlflow"
-set MLFLOW_TRACKING_USERNAME="SebaFama23"
-set MLFLOW_TRACKING_PASSWORD="6f5f090e18b20252f15a3fb0bce293ce0981e00b"
+set MLFLOW_TRACKING_URI="https://dagshub.com/<user>/<repo>.mlflow"
+set MLFLOW_TRACKING_USERNAME="user"
+set MLFLOW_TRACKING_PASSWORD="tokken"
+
+Github Actions: 
+# 1. Añadir el archivo modificado
+git add README.md
+
+# 2. Confirmar los cambios con un mensaje claro
+git commit -m "Test: Validando conexión DagsHub/CI despues de arreglo"
+
+# 3. Enviar el commit a GitHub (esto dispara la CI/CD)
+git push origin main
