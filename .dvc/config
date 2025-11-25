@@ -1,0 +1,4 @@
+[core]
+    remote = dagshub-storage
+['remote "dagshub-storage"']
+    url = https://dagshub.com/Sebafama23/telco_churn.dvc
