@@ -15,3 +15,4 @@ MLFOW conections:
 set MLFLOW_TRACKING_URI="https://dagshub.com/SebaFama23/mi_nuevo_proyecto_mlops.mlflow"
 set MLFLOW_TRACKING_USERNAME="SebaFama23"
 set MLFLOW_TRACKING_PASSWORD="6f5f090e18b20252f15a3fb0bce293ce0981e00b"
+"# telco_churn" 
