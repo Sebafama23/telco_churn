@@ -1,0 +1,26 @@
+stages:
+  # 1. NUEVA ETAPA DE PREPARACIÓN Y DIVISIÓN (Limpia y hace el split)
+  prepare:
+    # CMD: Solo necesita el crudo y los parámetros (el script se encarga de guardar train/test)
+    cmd: python src/data_prep.py --raw data/raw/telco_churn.csv --params params.yaml
+    deps:
+      - src/data_prep.py
+      - data/raw/telco_churn.csv # Depende del dataset crudo
+      - params.yaml
+    outs:
+      # LOS OUTPUTS SON LOS ARCHIVOS DE SPLIT
+      - data/train.csv 
+      - data/test.csv
+  
+  # 2. ETAPA DE ENTRENAMIENTO (usa los archivos de la etapa 'prepare')
+  train:
+    cmd: python src/train.py --train data/train.csv --test data/test.csv --model models/telco_churn.pkl --metrics metrics.json --params params.yaml
+    deps:
+      - src/train.py
+      - data/train.csv # AHORA DEPENDE DEL SPLIT
+      - data/test.csv  # AHORA DEPENDE DEL SPLIT
+      - params.yaml
+    outs:
+      - models/telco_churn.pkl
+    metrics:
+      - metrics.json

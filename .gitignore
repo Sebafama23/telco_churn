@@ -1,0 +1,14 @@
+.env
+.dvc/temp
+.venv/
+__pycache__/
+.ipynb_checkpoints
+# Archivos de Salida de la Pipeline
+models/
+metrics.json
+
+# Cache de DVC
+.dvc/cache
+
+# Archivos de Python comunes
+*.pyc

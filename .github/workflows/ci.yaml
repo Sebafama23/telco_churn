@@ -1,0 +1,51 @@
+name: DVC CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: ⚙️ Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install "dvc[all]" mlflow dagshub
+
+    - name: 🔑 Configure DVC remote
+      env:
+        DAGSHUB_USER: ${{ secrets.DAGSHUB_USERNAME }}
+        DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+      run: |
+        # SOLO MODIFICAR, NO AÑADIR (EVITA EL ERROR already exists)
+        dvc remote modify dagshub-storage --local auth basic
+        dvc remote modify dagshub-storage --local user "$DAGSHUB_USER"
+        dvc remote modify dagshub-storage --local password "$DAGSHUB_TOKEN"
+
+    - name: ⬇️ Pull data
+      # El pull debería funcionar ya que el hash es NUEVO
+      run: dvc pull
+      
+    - name: 🚀 Run pipeline
+      run: dvc repro
+      
+    - name: ⬆️ Push changes
+      run: dvc push
+
+    - name: 📊 Metrics
+      run: cat metrics.json
