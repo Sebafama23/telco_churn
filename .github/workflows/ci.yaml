@@ -27,22 +27,41 @@ jobs:
         pip install -r requirements.txt
         pip install "dvc[all]" mlflow dagshub
 
+    # 1️⃣ CONFIGURACIÓN DVC (Para pull/push de datos grandes)
     - name: 🔑 Configure DVC remote
       env:
         DAGSHUB_USER: ${{ secrets.DAGSHUB_USERNAME }}
         DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
       run: |
-        # SOLO MODIFICAR, NO AÑADIR (EVITA EL ERROR already exists)
+        # Configurar DVC para usar la autenticación básica con usuario/token
         dvc remote modify dagshub-storage --local auth basic
         dvc remote modify dagshub-storage --local user "$DAGSHUB_USER"
         dvc remote modify dagshub-storage --local password "$DAGSHUB_TOKEN"
+        
+    # 2️⃣ CONFIGURACIÓN MLFLOW (Para tracking de experimentos)
+    - name: 🔑 Configure MLflow Tracking to DagsHub
+      env:
+        # Rutas de DagsHub para MLflow
+        MLFLOW_TRACKING_URI: https://dagshub.com/Sebafama23/telco_churn.mlflow # <--- ¡IMPORTANTE! Reemplaza 'Sebafama23/telco_churn' si es necesario
+        MLFLOW_TRACKING_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+        MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+      run: |
+        echo "MLFLOW_TRACKING_URI=${{ env.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
+        echo "MLFLOW_TRACKING_USERNAME=${{ env.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
+        echo "MLFLOW_TRACKING_PASSWORD=${{ env.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
+
 
     - name: ⬇️ Pull data
       # El pull debería funcionar ya que el hash es NUEVO
       run: dvc pull
       
     - name: 🚀 Run pipeline
+      # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
       run: dvc repro
+      
+    # 3️⃣ AÑADIR DVC COMMIT (Mejora: Asegura que los metadatos del repro se rastreen)
+    - name: 💾 Commit DVC changes
+      run: dvc commit
       
     - name: ⬆️ Push changes
       run: dvc push
