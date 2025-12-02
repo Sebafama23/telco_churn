@@ -12,3 +12,4 @@ metrics.json
 
 # Archivos de Python comunes
 *.pyc
+mlruns/
