@@ -25,4 +25,4 @@ git commit -m "Test: Validando conexión DagsHub/CI despues de arreglo"
 # 3. Enviar el commit a GitHub (esto dispara la CI/CD)
 git push origin main
 
-# Prueba de credenciales
+# 4. Prueba de credenciales
