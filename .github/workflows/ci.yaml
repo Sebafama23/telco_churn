@@ -53,7 +53,7 @@ jobs:
 
     - name: ⬇️ Pull data
       # El pull debería funcionar ya que el hash es NUEVO
-      run: dvc pull
+      run: dvc pull --force
       
     - name: 🚀 Run pipeline
       # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
