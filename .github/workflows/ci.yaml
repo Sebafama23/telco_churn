@@ -53,7 +53,22 @@ jobs:
 
     - name: ⬇️ Pull data
       # El pull debería funcionar ya que el hash es NUEVO
-      run: dvc pull
+      run: dvc pull --force
+
+    - name: 👤 Configure Git User Identity
+      run: |
+        git config --global user.email "ci-runner@github.com"
+        git config --global user.name "GitHub CI Runner"
+
+    # 2️⃣ PASO MODIFICADO (para que el commit funcione)
+    - name: 🧹 Clean Git tracking
+      run: |
+        # Dejamos de rastrear el modelo y las métricas con Git, manteniendo el archivo local
+        git rm -r --cached models/telco_churn.pkl
+        git rm -r --cached metrics.json
+        
+        # El commit es necesario para que el cambio de metadatos se guarde antes de DVC repro
+        git commit -m "clean: Stop Git tracking for DVC outputs (model and metrics)"
       
     - name: 🚀 Run pipeline
       # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
