@@ -1,16 +1,18 @@
-model: 
-    type: LogisticRegression
-    C: 2.0 #modificado
-    max_iter: 200
-    penalty: 'l1' #NUEVO
-    solver: 'liblinear' #NUEVO
 split:
-    test_size: 0.2
-    random_state: 42
+  test_size: 0.2
+  random_state: 42
+
+model: 
+  type: LogisticRegression
+  C: 100.0 
+  max_iter: 200
+  penalty: 'l1' 
+  solver: 'liblinear' 
+
 paths:
-    raw_data: data/raw/telco_churn.csv
-    cleaned_data: data/cleaned/telco_churn_cleaned.csv 
-    train_data: data/train.csv
-    test_data: data/test.csv
-    model_path: models/telco_churn.pkl
-    metrics_path: metrics.json
+  raw_data: data/raw/telco_churn.csv
+  cleaned_data: data/cleaned/telco_churn_cleaned.csv 
+  train_data: data/train.csv
+  test_data: data/test.csv
+  model_path: models/telco_churn.pkl
+  metrics_path: metrics.json
