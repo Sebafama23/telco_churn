@@ -54,6 +54,12 @@ jobs:
     - name: ⬇️ Pull data
       # El pull debería funcionar ya que el hash es NUEVO
       run: dvc pull --force
+
+      # 🧹 NUEVO PASO: Limpiar el rastreo de Git de archivos que DVC debe manejar
+    - name: 🧹 Clean Git tracking
+      run: |
+        git rm -r --cached models/telco_churn.pkl
+        git commit -m "clean: Stop Git tracking for model file managed by DVC"
       
     - name: 🚀 Run pipeline
       # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
