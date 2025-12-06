@@ -55,7 +55,12 @@ jobs:
       # El pull debería funcionar ya que el hash es NUEVO
       run: dvc pull --force
 
-      # 🧹 NUEVO PASO: Limpiar el rastreo de Git de archivos que DVC debe manejar
+    - name: 👤 Configure Git User Identity
+      run: |
+        git config --global user.email "ci-runner@github.com"
+        git config --global user.name "GitHub CI Runner"
+
+    # 2️⃣ PASO MODIFICADO (para que el commit funcione)
     - name: 🧹 Clean Git tracking
       run: |
         git rm -r --cached models/telco_churn.pkl
