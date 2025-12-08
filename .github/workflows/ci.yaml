@@ -39,16 +39,16 @@ jobs:
         dvc remote modify dagshub-storage --local password "$DAGSHUB_TOKEN"
         
     # 2️⃣ CONFIGURACIÓN MLFLOW (Para tracking de experimentos)
-    - name: 🔑 Configure MLflow Tracking to DagsHub
+    - name: 🔑 Configure MLflow Tracking
       env:
-        # Rutas de DagsHub para MLflow
-        MLFLOW_TRACKING_URI: https://dagshub.com/Sebafama23/telco_churn.mlflow # <--- ¡IMPORTANTE! Reemplaza 'Sebafama23/telco_churn' si es necesario
+        MLFLOW_TRACKING_URI: https://dagshub.com/Sebafama23/telco_churn.mlflow
         MLFLOW_TRACKING_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
         MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+        # 🚨 NUEVAS VARIABLES CLAVE 🚨
+        MLFLOW_TRACKING_TOKEN: ${{ secrets.DAGSHUB_TOKEN }} # Usar token explícitamente
+        MLFLOW_TRACKING_HOST: https://dagshub.com/
       run: |
-        echo "MLFLOW_TRACKING_URI=${{ env.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
-        echo "MLFLOW_TRACKING_USERNAME=${{ env.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
-        echo "MLFLOW_TRACKING_PASSWORD=${{ env.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
+        # ... (resto del código de exportación)
 
 
     - name: ⬇️ Pull data
@@ -63,12 +63,9 @@ jobs:
     # 2️⃣ PASO MODIFICADO (para que el commit funcione)
     - name: 🧹 Clean Git tracking
       run: |
-        # Dejamos de rastrear el modelo y las métricas con Git, manteniendo el archivo local
-        git rm -r --cached models/telco_churn.pkl
-        git rm -r --cached metrics.json
-        
-        # El commit es necesario para que el cambio de metadatos se guarde antes de DVC repro
-        git commit -m "clean: Stop Git tracking for DVC outputs (model and metrics)"
+        # Usamos --ignore-unmatch para evitar fallas si el archivo ya no está en el índice.
+        git rm -r --cached --ignore-unmatch models/telco_churn.pkl
+        git rm -r --cached --ignore-unmatch metrics.json
       
     - name: 🚀 Run pipeline
       # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
