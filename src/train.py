@@ -77,15 +77,10 @@ def train_and_evaluate(train_path, test_path, model_path, metrics_path, params_p
         # 6. Guardar Modelo (model.pkl)
         joblib.dump(model, model_path)
         print(f"[OK] Modelo guardado en {model_path}")
-
-        # MLflow: Loguea el modelo como un artefacto y lo REGISTRA formalmente
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="model",
-            registered_model_name="TelcoChurnModel" # Creando nuevo registro del modelo
-        )
-
-        mlflow.log_artifact(metrics_path)
+        
+        # MLflow: Loguea el modelo como un artefacto
+        #mlflow.sklearn.log_model(model, "model_artifact")
+        mlflow.log_artifact(metrics_path) # También logueamos el metrics.json
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
