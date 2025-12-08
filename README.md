@@ -1,3 +1,8 @@
+
+# Video explicativo 
+https://drive.google.com/file/d/1fIYAo9XBqNrauop9oLJotqKRDl7ufiCR/view?usp=drive_link
+
+
 # 1- Clonar y Configurar
 1. Clonar el repositorio
 git clone https://github.com/Sebafama23/telco_churn.git
