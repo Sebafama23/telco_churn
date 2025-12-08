@@ -4,8 +4,8 @@ split:
 
 model: 
   type: LogisticRegression
-  C: 1.0 
-  max_iter: 100
+  C: 100 
+  max_iter: 200
   penalty: 'l1' 
   solver: 'liblinear' 
 
