@@ -63,12 +63,9 @@ jobs:
     # 2️⃣ PASO MODIFICADO (para que el commit funcione)
     - name: 🧹 Clean Git tracking
       run: |
-        # Añadimos --ignore-unmatch para que no falle si el archivo ya fue limpiado
+        # Usamos --ignore-unmatch para evitar fallas si el archivo ya no está en el índice.
         git rm -r --cached --ignore-unmatch models/telco_churn.pkl
         git rm -r --cached --ignore-unmatch metrics.json
-        
-        # El commit es necesario para guardar el cambio de metadatos (si hubo alguno)
-        git commit -m "clean: Stop Git tracking for DVC outputs (model and metrics)"
       
     - name: 🚀 Run pipeline
       # MLflow ahora sabrá dónde enviar los resultados gracias a las ENV
