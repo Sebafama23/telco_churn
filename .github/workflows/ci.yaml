@@ -63,11 +63,11 @@ jobs:
     # 2️⃣ PASO MODIFICADO (para que el commit funcione)
     - name: 🧹 Clean Git tracking
       run: |
-        # Dejamos de rastrear el modelo y las métricas con Git, manteniendo el archivo local
-        git rm -r --cached models/telco_churn.pkl
-        git rm -r --cached metrics.json
+        # Añadimos --ignore-unmatch para que no falle si el archivo ya fue limpiado
+        git rm -r --cached --ignore-unmatch models/telco_churn.pkl
+        git rm -r --cached --ignore-unmatch metrics.json
         
-        # El commit es necesario para que el cambio de metadatos se guarde antes de DVC repro
+        # El commit es necesario para guardar el cambio de metadatos (si hubo alguno)
         git commit -m "clean: Stop Git tracking for DVC outputs (model and metrics)"
       
     - name: 🚀 Run pipeline
